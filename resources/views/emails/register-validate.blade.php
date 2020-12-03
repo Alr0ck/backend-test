@@ -4,7 +4,7 @@
 Silahkan Klik Tautan Dibawah ini :
 
 @component('mail::panel')
-<a href="{{env('APP_URL')}}/api/v1/validate?token={{$data->validateToken}}">{{env('APP_URL')}}/api/v1/validate?token={{$data->validateToken}}</a>
+<a href="{{env('APP_URL')}}/api/v1/registers/validate?token={{$data->validateToken}}">{{env('APP_URL')}}/api/v1/registers/validate?token={{$data->validateToken}}</a>
 @endcomponent
 
 Thanks,<br>

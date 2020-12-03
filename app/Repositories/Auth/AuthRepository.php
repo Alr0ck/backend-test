@@ -74,5 +74,25 @@ class AuthRepository implements IAuthRepository
 
         return $transac['user'];
     }
+
+    public function validateRegister($request){
+        $token = isset($request->token) ? $request->token : null;
+        if($token != null){
+            $decode = base64_decode($token);
+            $data = explode('::',$decode);
+            $userId = isset($data[0]) ? $data[0] : null;
+            $email = isset($data[1]) ? $data[1] : null;
+            
+            if($userId != null && $email != null){
+                $user = User::where('id',$userId)->where('email',$email)->where('status','new')->first();
+                if($user != null){
+                    $user->status = 'confirmed';
+                    $user->save();
+                    return $user;
+                }
+            }
+        }
+        return null;
+    }
 }
 

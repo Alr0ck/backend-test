@@ -21,7 +21,11 @@ $router->group(['prefix' => 'employees'], function () use ($router) {
     Route::delete('/{id:[0-9]+}', ['middleware' => 'auth', 'uses' => 'Employee\EmployeeController@destroy']);
 });
 
+$router->group(['prefix' => 'registers'], function () use ($router) {
+    Route::post('/', 'Auth\AuthController@doRegister');
+    Route::get('/validate', 'Auth\AuthController@validateRegister');
+});
+
 Route::post('/logins', 'Auth\AuthController@doLogin');
-Route::post('/registers', 'Auth\AuthController@doRegister');
 
 Route::get('/files/{name}','FileManager\FileController@show');

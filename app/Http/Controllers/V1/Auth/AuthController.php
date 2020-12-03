@@ -41,4 +41,18 @@ class AuthController extends Controller
         );
     }
 
+    public function validateRegister(Request $request){
+        $user =  $this->authRepo->validateRegister($request);
+
+        if($user == null){
+            return $this->emptyResponse('Validasi User Baru Gagal, Data Tidak Valid');
+        }
+
+        return $this->singleResponse(
+            $request,
+            $user, 'registers-validate',
+            new RegisterTransformer()
+        );
+    }
+
 }
