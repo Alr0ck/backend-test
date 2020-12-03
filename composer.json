@@ -12,6 +12,7 @@
         "illuminate/mail": "5.8.*",
         "illuminate/redis": "^5.8",
         "laravel/lumen-framework": "5.8.*",
+        "lcobucci/jwt": "3.3.3",
         "nesbot/carbon": "^2.22",
         "predis/predis": "^1.1",
         "spatie/data-transfer-object": "^1.13",
