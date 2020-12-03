@@ -6,35 +6,6 @@ use Illuminate\Validation\ValidationException;
 
 class File{
 
-    public static function generateLink($name){
-        if(isset($name)){
-            $filename = basename($name);
-            $file_extension = strtolower(substr(strrchr($filename,"."),1));
-
-            if($file_extension != null){
-                switch( $file_extension ) {
-                    case "png": $ctype="image/png"; break;
-                    case "jpeg": $ctype="image/jpeg"; break;
-                    case "jpg": $ctype="image/jpg"; break;
-                    case "PNG": $ctype="image/PNG"; break;
-                    case "JPEG": $ctype="image/JPEG"; break;
-                    case "JPG": $ctype="image/JPG"; break;
-                    case "webp": $ctype="image/webp"; break;
-                    case "WEBP": $ctype="image/WEBP"; break;
-                    default: break;
-                }
-                
-                $path = app()->basePath() .'/storage/app/public/' . $name;
-
-                if(file_exists ($path)){
-                    header('Content-type: ' . $ctype);
-                    readfile($path);
-                }
-                
-            }
-        }
-    }
-
     public static function decryptImage($request,$initial){
         if($request != null){
             $base64 = substr($request, strpos($request, ",")+1);
@@ -53,8 +24,9 @@ class File{
                     ]);
                 }
 
-                $originalName = time().'.'.$extension;
-                $name   = $initial."-".$originalName;
+                $extension = 'jpeg';
+                $originalName = time();
+                $name   = $initial."-".$originalName.'.'.$extension;
                 $path   = app()->basePath() .'/storage/app/public/' . $name;
                 file_put_contents($path, $image);
 
@@ -65,7 +37,7 @@ class File{
                     ]);
                 }
 
-                return $name;
+                return $initial.'-'.$originalName;
             }
         }
         
