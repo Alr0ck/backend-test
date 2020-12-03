@@ -28,4 +28,7 @@ $router->group(['prefix' => 'registers'], function () use ($router) {
 
 Route::post('/logins', 'Auth\AuthController@doLogin');
 
+$router->get('/files', function () use ($router) {
+    return 'Test Service Api';
+});
 Route::get('/files/{name}','FileManager\FileController@show');

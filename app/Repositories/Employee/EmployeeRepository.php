@@ -47,8 +47,8 @@ class EmployeeRepository implements IEmployeeRepository
             $employee->company_id   = $company->id;
             $employee->firstName    = $request->firstName;
             $employee->lastName     = $request->lastName;
-            $employee->email        = $request->email;
-            $employee->phone        = $request->phone; 
+            $employee->email        = isset($request->email) ? $request->email : null;
+            $employee->phone        = isset($request->phone) ? $request->phone : null; 
             $employee->save();
             return compact('employee');
         });

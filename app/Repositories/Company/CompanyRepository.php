@@ -36,9 +36,9 @@ class CompanyRepository implements ICompanyRepository
         $transac = DB::transaction(function() use($request){
             $company = new Company;
             $company->name      = $request->name;
-            $company->email     = $request->email;
-            $company->logo      = $request->logo;
-            $company->website   = $request->website; 
+            $company->email     = isset($request->email) ? $request->email : null;
+            $company->logo      = isset($request->logo) ? \App\Services\File::decryptImage($request->logo,'logo') : null;
+            $company->website   = isset($request->website) ? $request->website : null; 
             $company->save();
             return compact('company');
         });
@@ -54,7 +54,7 @@ class CompanyRepository implements ICompanyRepository
 
             $company->name  = isset($request->name) ? $request->name : $company->name;
             $company->email = isset($request->email) ? $request->email : $company->email;
-            $company->logo  = isset($request->logo) ? $request->logo : $company->logo;
+            $company->logo  = isset($request->logo) ? \App\Services\File::decryptImage($request->logo,'logo') : $company->logo;
             $company->website = isset($request->website) ? $request->website : $company->website;
             $company->save();
             

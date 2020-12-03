@@ -14,7 +14,7 @@ class CompanyTransformer extends TransformerAbstract
             'id'            => (int) $c->id,
             'name'          => $c->name,
             'email'         => $c->email,
-            'logo'          => $c->logo,
+            'logo'          => $c->logo != null ? env('APP_URL').'/api/v1/files/' . $c->logo : null,
             'website'       => $c->website,
             'dateCreated'   => $c->dateCreated,
             'dateUpdated'   => $c->dateUpdated,
