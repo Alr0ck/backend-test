@@ -19,6 +19,10 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+$router->get('/me', ['middleware'=>'auth', function () use ($router) {
+    return $router->app->version();
+}]);
+
 $router->get('/login', function (Request $request) {
     $token = app('auth')->attempt($request->only('email', 'password'));
  
