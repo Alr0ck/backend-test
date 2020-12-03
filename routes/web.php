@@ -19,6 +19,13 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+Route::group([
+    'namespace'  => 'V1',
+    'prefix'     => '/api/v1',
+], function ($router) {
+    require base_path('routes/appApi.v1.php');
+});
+
 $router->get('/me', ['middleware'=>'auth', function () use ($router) {
     return $router->app->version();
 }]);
