@@ -7,17 +7,21 @@ use Illuminate\Http\Request;
 use App\Repositories\Company\ICompanyRepository;
 use App\Models\Company;
 use App\Transformers\CompanyTransformer;
+use App\Validations\CompanyValidation;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class CompanyController extends Controller
 {
     protected $companyRepo;
+    protected $companyVal;
 
     public function __construct(
-        ICompanyRepository $companyRepo
+        ICompanyRepository $companyRepo,
+        CompanyValidation $companyVal
     )
     {
         $this->companyRepo = $companyRepo;
+        $this->companyVal = $companyVal;
     }
     
     public function index(Request $request)
@@ -33,6 +37,7 @@ class CompanyController extends Controller
     public function store(Request $request)
     {
         $attr = $this->resolveRequest($request);
+        $this->companyVal->createCompany($attr);
         $company = $this->companyRepo->createCompany($attr);
         
         return $this->crateUpdateResponse(
@@ -46,10 +51,11 @@ class CompanyController extends Controller
     public function update(Request $request, $id)
     {
         $attr = $this->resolveRequest($request);
+        $this->companyVal->updateCompany($attr);
         $company = $this->companyRepo->updateCompany($attr,$id);
 
         if($company == null){
-            throw new AuthorizationException("You Not Authorized Access End Point");
+            throw new AuthorizationException("Anda Tidak Diperbolehkan Mengakses Endpoint");
         }
         
         return $this->crateUpdateResponse(
@@ -80,7 +86,7 @@ class CompanyController extends Controller
     {
         $company = $this->companyRepo->deleteCompany($id);
         if(!$company){
-            throw new AuthorizationException("You Not Authorized Access End Point");
+            throw new AuthorizationException("Anda Tidak Diperbolehkan Mengakses Endpoint");
         }
         return $this->deleteResponse();
     }

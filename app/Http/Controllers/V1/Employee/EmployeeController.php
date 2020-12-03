@@ -7,17 +7,21 @@ use Illuminate\Http\Request;
 use App\Repositories\Employee\IEmployeeRepository;
 use App\Models\Employee;
 use App\Transformers\EmployeeTransformer;
+use App\Validations\EmployeeValidation;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class EmployeeController extends Controller
 {
     protected $employeeRepo;
+    protected $employeeVal;
 
     public function __construct(
-        IEmployeeRepository $employeeRepo
+        IEmployeeRepository $employeeRepo,
+        EmployeeValidation $employeeVal
     )
     {
         $this->employeeRepo = $employeeRepo;
+        $this->employeeVal = $employeeVal;
     }
     
     public function index(Request $request)
@@ -33,6 +37,7 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         $attr = $this->resolveRequest($request);
+        $this->employeeVal->createEmployee($attr);
         $employee = $this->employeeRepo->createEmployee($attr);
         
         return $this->crateUpdateResponse(
@@ -46,10 +51,11 @@ class EmployeeController extends Controller
     public function update(Request $request, $id)
     {
         $attr = $this->resolveRequest($request);
+        $this->employeeVal->updateEmployee($attr);
         $employee = $this->employeeRepo->updateEmployee($attr,$id);
 
         if($employee == null){
-            throw new AuthorizationException("You Not Authorized Access End Point");
+            throw new AuthorizationException("Anda Tidak Diperbolehkan Mengakses Endpoint");
         }
         
         return $this->crateUpdateResponse(
@@ -80,7 +86,7 @@ class EmployeeController extends Controller
     {
         $employee = $this->employeeRepo->deleteEmployee($id);
         if(!$employee){
-            throw new AuthorizationException("You Not Authorized Access End Point");
+            throw new AuthorizationException("Anda Tidak Diperbolehkan Mengakses Endpoint");
         }
         return $this->deleteResponse();
     }

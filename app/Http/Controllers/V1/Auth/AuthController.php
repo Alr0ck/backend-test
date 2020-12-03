@@ -7,22 +7,26 @@ use Illuminate\Http\Request;
 use App\Repositories\Auth\IAuthRepository;
 use App\Transformers\LoginTransformer;
 use App\Transformers\RegisterTransformer;
-use Illuminate\Auth\Access\AuthorizationException;
+use App\Validations\AuthValidation;
 
 class AuthController extends Controller
 {
     protected $authRepo;
+    protected $authVal;
 
     public function __construct(
-        IAuthRepository $authRepo
+        IAuthRepository $authRepo,
+        AuthValidation $authVal
     )
     {
         $this->authRepo = $authRepo;
+        $this->authVal = $authVal;
     }
     
     public function doLogin(Request $request)
     {
         $attr = $this->resolveRequest($request);
+        $this->authVal->doLogin($attr);
         $login =  $this->authRepo->doLogin($request,$attr);
         return $this->singleResponse(
             $request,
@@ -33,6 +37,7 @@ class AuthController extends Controller
 
     public function doRegister(Request $request){
         $attr = $this->resolveRequest($request);
+        $this->authVal->doRegister($attr);
         $user =  $this->authRepo->doRegister($attr);
         return $this->singleResponse(
             $request,

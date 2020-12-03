@@ -54,6 +54,13 @@ class AuthRepository implements IAuthRepository
 
     public function doRegister($request){
         $transac = DB::transaction(function() use ($request){
+            $userCheck = User::where('email',$request->email)->where('status','confirmed')->first();
+            if($userCheck != null){
+                throw ValidationException::withMessages([
+                    'user' => 'User Telah Terdaftar'
+                ]);
+            }
+
             $user = new User;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
@@ -84,15 +91,36 @@ class AuthRepository implements IAuthRepository
             $email = isset($data[1]) ? $data[1] : null;
             
             if($userId != null && $email != null){
+                $checkUserRegistered = $this->checkUserRegistered($email);
+                if($checkUserRegistered != null){
+                    return $checkUserRegistered;
+                }                
+
                 $user = User::where('id',$userId)->where('email',$email)->where('status','new')->first();
                 if($user != null){
                     $user->status = 'confirmed';
                     $user->save();
+                    
+                    $this->removeUnregisteredUser($email);
+                    
                     return $user;
                 }
             }
         }
         return null;
+    }
+
+    private function checkUserRegistered($email){
+        $availUser = User::where('email',$email)->where('status','confirmed')->first();
+        if($availUser != null){
+            $this->removeUnregisteredUser($email);
+            return $availUser;
+        }
+        return null;
+    }
+
+    private function removeUnregisteredUser($email) : void {
+        User::where('email',$email)->where('status','!=','confirmed')->delete();
     }
 }
 
