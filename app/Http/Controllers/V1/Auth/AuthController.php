@@ -6,6 +6,7 @@ use App\Http\Controllers\V1\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\Auth\IAuthRepository;
 use App\Transformers\LoginTransformer;
+use App\Transformers\RegisterTransformer;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class AuthController extends Controller
@@ -27,6 +28,16 @@ class AuthController extends Controller
             $request,
             $login, 'logins',
             new LoginTransformer()
+        );
+    }
+
+    public function doRegister(Request $request){
+        $attr = $this->resolveRequest($request);
+        $user =  $this->authRepo->doRegister($attr);
+        return $this->singleResponse(
+            $request,
+            $user, 'registers',
+            new RegisterTransformer()
         );
     }
 

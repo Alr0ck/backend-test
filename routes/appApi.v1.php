@@ -22,5 +22,6 @@ $router->group(['prefix' => 'employees'], function () use ($router) {
 });
 
 Route::post('/logins', 'Auth\AuthController@doLogin');
+Route::post('/registers', 'Auth\AuthController@doRegister');
 
 Route::get('/files/{name}','FileManager\FileController@show');
