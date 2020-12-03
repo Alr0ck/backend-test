@@ -19,8 +19,15 @@ class User extends Model implements JWTSubject, AuthenticatableContract
      *
      * @var array
      */
+
+    const CREATED_AT = 'dateCreated';
+    const UPDATED_AT = 'dateUpdated';
+    const DELETED_AT = 'dateDeleted';
+
     protected $fillable = [
-        'name', 'email',
+        'name', 
+        'email',
+        'status'
     ];
 
     /**

@@ -21,4 +21,6 @@ $router->group(['prefix' => 'employees'], function () use ($router) {
     Route::delete('/{id:[0-9]+}', ['middleware' => 'auth', 'uses' => 'Employee\EmployeeController@destroy']);
 });
 
+Route::post('/logins', 'Auth\AuthController@doLogin');
+
 Route::get('/files/{name}','FileManager\FileController@show');

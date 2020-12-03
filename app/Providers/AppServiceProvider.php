@@ -22,5 +22,10 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Employee\IEmployeeRepository',
             'App\Repositories\Employee\EmployeeRepository'
         );
+
+        $this->app->bind(
+            'App\Repositories\Auth\IAuthRepository',
+            'App\Repositories\Auth\AuthRepository'
+        );        
     }
 }
