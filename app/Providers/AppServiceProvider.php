@@ -17,5 +17,10 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Company\ICompanyRepository',
             'App\Repositories\Company\CompanyRepository'
         );
+
+        $this->app->bind(
+            'App\Repositories\Employee\IEmployeeRepository',
+            'App\Repositories\Employee\EmployeeRepository'
+        );
     }
 }

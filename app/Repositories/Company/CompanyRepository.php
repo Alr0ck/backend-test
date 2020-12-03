@@ -64,11 +64,11 @@ class CompanyRepository implements ICompanyRepository
     }
 
     public function deleteCompany($id){
-        $survey = Company::find($id);
-        if($survey == null){
+        $company = Company::find($id);
+        if($company == null){
             return false;
         }
-        $survey->delete();
+        $company->delete();
         return true;
     }
 }

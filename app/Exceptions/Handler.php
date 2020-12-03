@@ -55,7 +55,7 @@ class Handler extends ExceptionHandler
                 $globalStatus = 404;
                 $errors[] = array(
                     'status' => $globalStatus,
-                    'title' => Lang::get('common.not_found')
+                    'title' => 'Endpoint Tidak Ditemukan'
                 );
                 if (!app()->environment('production')) {
                     $errors[0]['source'] = $exception->getFile();
@@ -69,7 +69,7 @@ class Handler extends ExceptionHandler
                 $globalStatus = Response::HTTP_METHOD_NOT_ALLOWED;
                 $errors[] = array(
                     'status' => $globalStatus,
-                    'title' => Lang::get('common.http_forbidden')
+                    'title' => 'Method Tidak Diperbolehkan'
                 );
                 if (!app()->environment('production')) {
                     $errors[0]['source'] = $exception->getFile();
@@ -111,7 +111,7 @@ class Handler extends ExceptionHandler
                 $globalStatus = 422;
                 $errors[] = array(
                     'status' => $globalStatus,
-                    'title' => Lang::get('validation.data_not_valid'),
+                    'title' => 'Cek Kembali, data yang kamu berikan kurang lengkap atau kurang benar',
                     'detail' => $exception->validator->errors()
                 );
                 if (!app()->environment('production')) {
@@ -125,7 +125,7 @@ class Handler extends ExceptionHandler
                 $globalStatus = 500;
                 $errors[] = array(
                     'status' => $globalStatus,
-                    'title' => Lang::get('common.error_exception')
+                    'title' => 'Mohon Maaf, Terjadi Kesalahan Sistem'
                 );
                 if (!app()->environment('production')) {
                     $errors[0]['source'] = array(

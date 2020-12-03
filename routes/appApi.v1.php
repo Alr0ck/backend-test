@@ -13,4 +13,12 @@ $router->group(['prefix' => 'companies'], function () use ($router) {
     Route::delete('/{id:[0-9]+}', ['middleware' => 'auth', 'uses' => 'Company\CompanyController@destroy']);
 });
 
+$router->group(['prefix' => 'employees'], function () use ($router) {
+    Route::get('/', 'Employee\EmployeeController@index');
+    Route::post('/', ['middleware' => 'auth', 'uses' => 'Employee\EmployeeController@store']);
+    Route::get('/{id:[0-9]+}', 'Employee\EmployeeController@show');
+    Route::put('/{id:[0-9]+}', ['middleware' => 'auth', 'uses' => 'Employee\EmployeeController@update']);
+    Route::delete('/{id:[0-9]+}', ['middleware' => 'auth', 'uses' => 'Employee\EmployeeController@destroy']);
+});
+
 Route::get('/files/{name}','FileManager\FileController@show');
